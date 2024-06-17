@@ -28,6 +28,11 @@ _tls-none = []
 # support offline/decoupled building (enables serialization of `Describe`)
 offline = ["serde", "either/serde"]
 
+# drivers
+mysql = []
+postgres = []
+sqlite = []
+
 [dependencies]
 # Runtimes
 async-std = { workspace = true, optional = true }

@@ -97,9 +97,9 @@ _rt-tokio = []
 
 # database
 any = ["sqlx-core/any", "sqlx-mysql?/any", "sqlx-postgres?/any", "sqlx-sqlite?/any"]
-postgres = ["sqlx-postgres", "sqlx-macros?/postgres"]
-mysql = ["sqlx-mysql", "sqlx-macros?/mysql"]
-sqlite = ["sqlx-sqlite", "sqlx-macros?/sqlite"]
+postgres = ["sqlx-postgres", "sqlx-macros?/postgres", "sqlx-core/postgres"]
+mysql = ["sqlx-mysql", "sqlx-macros?/mysql", "sqlx-core/mysql"]
+sqlite = ["sqlx-sqlite", "sqlx-macros?/sqlite", "sqlx-core/sqlite"]
 
 # types
 json = ["sqlx-macros?/json", "sqlx-mysql?/json", "sqlx-postgres?/json", "sqlx-sqlite?/json"]
@@ -152,7 +152,7 @@ features = ["time", "net", "sync", "fs", "io-util", "rt"]
 default-features = false
 
 [dependencies]
-sqlx-core = { workspace = true, features = ["offline", "migrate"] }
+sqlx-core = { workspace = true, features = ["offline", "migrate", "any"] }
 sqlx-macros = { workspace = true, optional = true }
 
 sqlx-mysql = { workspace = true, optional = true }
@@ -192,12 +192,13 @@ libsqlite3-sys = { version = "0.28", features = ["bundled-sqlcipher"] }
 [[test]]
 name = "any"
 path = "tests/any/any.rs"
-required-features = ["any"]
+# Sqlite is needed as any_kind needs at least one database type to be enabled
+required-features = ["any", "sqlite"]
 
 [[test]]
 name = "any-pool"
 path = "tests/any/pool.rs"
-required-features = ["any"]
+required-features = ["any", "sqlite"]
 
 #
 # Migrations
