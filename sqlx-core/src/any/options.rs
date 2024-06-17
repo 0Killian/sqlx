@@ -1,4 +1,4 @@
-use crate::any::AnyConnection;
+use crate::any::{AnyKind, AnyConnection};
 use crate::connection::{ConnectOptions, LogSettings};
 use crate::error::Error;
 use futures_core::future::BoxFuture;
@@ -19,6 +19,7 @@ use url::Url;
 pub struct AnyConnectOptions {
     pub database_url: Url,
     pub log_settings: LogSettings,
+    kind: AnyKind,
 }
 impl FromStr for AnyConnectOptions {
     type Err = Error;
@@ -29,6 +30,7 @@ impl FromStr for AnyConnectOptions {
                 .parse::<Url>()
                 .map_err(|e| Error::Configuration(e.into()))?,
             log_settings: LogSettings::default(),
+            kind: AnyKind::from_str(url)?,
         })
     }
 }
@@ -40,6 +42,7 @@ impl ConnectOptions for AnyConnectOptions {
         Ok(AnyConnectOptions {
             database_url: url.clone(),
             log_settings: LogSettings::default(),
+            kind: AnyKind::from_str(url.as_str())?,
         })
     }
 
@@ -61,5 +64,11 @@ impl ConnectOptions for AnyConnectOptions {
         self.log_settings.slow_statements_level = level;
         self.log_settings.slow_statements_duration = duration;
         self
+    }
+}
+
+impl AnyConnectOptions {
+    pub fn kind(&self) -> AnyKind {
+        self.kind
     }
 }
