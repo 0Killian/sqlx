@@ -55,15 +55,7 @@
 //! [`Pool::begin`].
 
 use self::inner::PoolInner;
-#[cfg(all(
-    any(
-        feature = "postgres",
-        feature = "mysql",
-        feature = "mssql",
-        feature = "sqlite"
-    ),
-    feature = "any"
-))]
+#[cfg(feature = "any")]
 use crate::any::{Any, AnyKind};
 use crate::connection::Connection;
 use crate::database::Database;
@@ -540,15 +532,7 @@ impl<DB: Database> Pool<DB> {
     }
 }
 
-#[cfg(all(
-    any(
-        feature = "postgres",
-        feature = "mysql",
-        feature = "mssql",
-        feature = "sqlite"
-    ),
-    feature = "any"
-))]
+#[cfg(feature = "any")]
 impl Pool<Any> {
     /// Returns the database driver currently in-use by this `Pool`.
     ///
@@ -558,7 +542,7 @@ impl Pool<Any> {
             .connect_options
             .read()
             .expect("write-lock holder panicked")
-            .kind()
+            .kind
     }
 }
 
