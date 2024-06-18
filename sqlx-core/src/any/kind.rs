@@ -16,13 +16,11 @@ impl FromStr for AnyKind {
             _ if url.starts_with("postgres:") || url.starts_with("postgresql:") => {
                 Ok(AnyKind::Postgres)
             }
-            _ if url.starts_with("mysql:") || url.starts_with("mariadb:") => {
-                Ok(AnyKind::MySql)
-            }
-            _ if url.starts_with("sqlite:") => {
-                Ok(AnyKind::Sqlite)
-            }
-            _ => Err(Error::Configuration(format!("unrecognized database url: {url:?}").into()))
+            _ if url.starts_with("mysql:") || url.starts_with("mariadb:") => Ok(AnyKind::MySql),
+            _ if url.starts_with("sqlite:") => Ok(AnyKind::Sqlite),
+            _ => Err(Error::Configuration(
+                format!("unrecognized database url: {url:?}").into(),
+            )),
         }
     }
 }

@@ -1,4 +1,4 @@
-use crate::any::{AnyKind, AnyConnection};
+use crate::any::{AnyConnection, AnyKind};
 use crate::connection::{ConnectOptions, LogSettings};
 use crate::error::Error;
 use futures_core::future::BoxFuture;
